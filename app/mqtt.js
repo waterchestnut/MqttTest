@@ -2,53 +2,53 @@
  * Created by xinhuaguocai on 2017/4/12.
  */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
     View,
 } from 'react-native'
-var mqtt    = require('react-native-mqtt');
+var mqtt = require('react-native-mqtt');
 
 
 export default class Mqtt extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={logs:['mqtt']}
+        this.state = {logs: ['mqtt']}
     }
 
-    componentWillMount(){
-        let context=this;
+    componentWillMount() {
+        let context = this;
         let {logs} = this.state;
-        
+
         /* create mqtt client */
         mqtt.createClient({
             uri: 'mqtt://192.168.100.12:5112',
             clientId: '123'
-        }).then(function(client) {
+        }).then(function (client) {
             console.log('created');
-            client.on('closed', function() {
+            client.on('closed', function () {
                 console.log('mqtt.event.closed');
                 logs.push('mqtt.event.closed');
                 context.setState({logs})
 
             });
 
-            client.on('error', function(msg) {
+            client.on('error', function (msg) {
                 console.log('mqtt.event.error', msg);
-                logs.push('mqtt.event.error:'+msg);
+                logs.push('mqtt.event.error:' + msg);
                 context.setState({logs})
 
             });
 
-            client.on('message', function(msg) {
-              msg=msg.data;
+            client.on('message', function (msg) {
+                msg = msg.data;
                 console.log('mqtt.event.message', msg);
-                logs.push('mqtt.event.message:'+msg);
+                logs.push('mqtt.event.message:' + msg);
                 context.setState({logs})
             });
 
-            client.on('connect', function() {
+            client.on('connect', function () {
                 console.log('connected');
                 logs.push('connected');
                 context.setState({logs});
@@ -57,9 +57,9 @@ export default class Mqtt extends Component {
             });
 
             client.connect();
-        }).catch(function(err){
+        }).catch(function (err) {
             console.log(err);
-            logs.push('err:'+err);
+            logs.push('err:' + err);
             context.setState({logs})
         });
     }
@@ -68,7 +68,7 @@ export default class Mqtt extends Component {
         return (
             <View style={styles.container}>
                 {
-                    this.state.logs.map((msg,index)=>{
+                    this.state.logs.map((msg, index) => {
                         return <Text key={index} style={styles.instructions}>
                             {msg}
                         </Text>
