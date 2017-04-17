@@ -1,0 +1,3 @@
+rootProject.name = 'MqttTest'
+
+include ':app'
